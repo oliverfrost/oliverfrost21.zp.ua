@@ -1,5 +1,26 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     grunt.initConfig({
+        jshint: {
+            options: {
+                reporter: require('jshint-stylish')
+            },
+            all: ['src/scripts/**/*.js']
+        },
+
+        concat: {
+            prod: {
+                src: ['src/scripts/**/**.js'],
+                dest: 'builds/production/scripts/app.js'
+            },
+            dev: {
+                options: {
+                    separator: '\n\n'
+                },
+                src: ['src/scripts/**/**.js'],
+                dest: 'builds/development/scripts/app.js'
+            }
+        },
+
         sass: {
             prod: {
                 options: {
@@ -11,7 +32,7 @@ module.exports = function(grunt) {
                     dest: 'builds/production/css/styles.css'
                 }]
             },
-            devt: {
+            dev: {
                 options: {
                     sourceMap: true,
                     outputStyle: 'expanded'
@@ -21,9 +42,39 @@ module.exports = function(grunt) {
                     dest: 'builds/development/css/styles.css'
                 }]
             }
+        },
+
+        connect: {
+            server: {
+                options: {
+                    hostname: 'localhost',
+                    port: '3000',
+                    base: 'builds/development/index.html',
+                    livereload: true
+                }
+            }
+        },
+
+        watch: {
+            options: {
+                spawn: false,
+                livereload: true
+            },
+            scripts: {
+                files: ['src/css/**/**.scss', 'src/scripts/**/*.js', 'src/**/*.html'],
+                tasks: ['jshint', 'concat', 'sass'],
+                options: {
+                    interrupt: true
+                }
+            }
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-sass');
-    grunt.registerTask('default', ['sass']);
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+
+    grunt.registerTask('default', ['jshint', 'concat', 'sass', 'watch']);
 };

@@ -1,3 +1,7 @@
+# Project
+/builds/development
+/builds/production
+
 # NodeJS
 node_modules/
 
