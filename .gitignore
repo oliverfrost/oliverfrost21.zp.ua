@@ -4,6 +4,7 @@
 
 # NodeJS
 node_modules/
+bower_modules/
 
 # WebStorm
 .idea/

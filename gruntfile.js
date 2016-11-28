@@ -1,5 +1,26 @@
 module.exports = function (grunt) {
     grunt.initConfig({
+        htmlmin: {
+            prod: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: {
+                    'builds/production/index.min.html': 'src/index.html'
+                }
+            },
+            dev: {
+                options: {
+                    removeComments: false,
+                    collapseWhitespace: false
+                },
+                files: {
+                    'builds/development/index.min.html': 'src/index.html'
+                }
+            }
+        },
+
         jshint: {
             options: {
                 reporter: require('jshint-stylish')
@@ -70,11 +91,12 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'sass', 'watch']);
+    grunt.registerTask('default', ['htmlmin', 'jshint', 'concat', 'sass', 'watch']);
 };
