@@ -1,0 +1,29 @@
+{
+  "name": "oliverfrost21",
+  "description": "This is my personal website for the internet.",
+  "main": "index.js",
+  "authors": [
+    "Serhii Kholodniy"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "html5",
+    "css3",
+    "sass",
+    "javascript",
+    "angularjs",
+    "grunt"
+  ],
+  "homepage": "https://github.com/oliverfrost/oliverfrost21.zp.ua",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.0"
+  }
+}

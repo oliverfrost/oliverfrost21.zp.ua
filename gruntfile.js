@@ -1,5 +1,23 @@
 module.exports = function (grunt) {
     grunt.initConfig({
+        /* Remove builds */
+        clean: {
+            dev: {
+                src: ['builds/development']
+            },
+            prod: {
+                src: ['builds/production']
+            }
+        },
+
+        /* Validate HTML */
+        htmlhint: {
+            html1: {
+                src: ['src/**/*.html']
+            }
+        },
+
+        /* Minimize HTML files */
         htmlmin: {
             prod: {
                 options: {
@@ -21,27 +39,34 @@ module.exports = function (grunt) {
             }
         },
 
+        /* Validate JavaScript files */
         jshint: {
             options: {
                 reporter: require('jshint-stylish')
             },
-            all: ['src/scripts/**/*.js']
+            all: ['src/server.js', 'src/scripts/**/*.js']
         },
 
-        concat: {
+        /* Concatenate and minimize JavaScript files */
+        uglify: {
             prod: {
-                src: ['src/scripts/**/**.js'],
-                dest: 'builds/production/scripts/app.js'
+                files: {
+                    'builds/production/scripts/app.min.js': ['src/scripts/**/*.js'],
+                    'builds/production/server.min.js': ['src/server.js']
+                }
             },
             dev: {
                 options: {
-                    separator: '\n\n'
+                    beautify: true
                 },
-                src: ['src/scripts/**/**.js'],
-                dest: 'builds/development/scripts/app.js'
+                files: {
+                    'builds/development/scripts/app.min.js': ['src/scripts/**/*.js'],
+                    'builds/development/server.min.js': ['src/server.js']
+                }
             }
         },
 
+        /* Convert SASS to CSS */
         sass: {
             prod: {
                 options: {
@@ -76,6 +101,7 @@ module.exports = function (grunt) {
             }
         },
 
+        /* Do 'tasks' when watched files are changed */
         watch: {
             options: {
                 spawn: false,
@@ -91,12 +117,14 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-htmlhint');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
-    grunt.registerTask('default', ['htmlmin', 'jshint', 'concat', 'sass', 'watch']);
+    grunt.registerTask('default', ['clean', 'htmlhint', 'htmlmin', 'jshint', 'uglify', 'sass', 'watch']);
 };

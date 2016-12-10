@@ -1,3 +1,4 @@
-/**
- * Created by sergh on 28-Nov-16.
- */
+angular.module('MyApp', [])
+    .controller('MyAppController', function($scope) {
+
+});
